@@ -9,11 +9,13 @@ export class CartService {
   items = signal<CartItem[]>([
     {
       id: crypto.randomUUID(),
-      // name: '',
       price: null,
       quantity: 1,
     },
   ]);
+
+  // Payment state
+  paymentAmount = signal<number | null>(null);
 
   // Helper for individual subtotal
   getItemSubtotal(item: CartItem): number {
@@ -32,11 +34,17 @@ export class CartService {
     this.items().reduce((sum, item) => sum + this.getItemSubtotal(item), 0),
   );
 
+  // Computed change due calculation
+  changeDue = computed(() => {
+    const payment = Number(this.paymentAmount()) || 0;
+    const total = this.grandTotal();
+    return Math.max(0, payment - total);
+  });
+
   // State mutation methods
   addItem() {
     const newItem: CartItem = {
       id: crypto.randomUUID(),
-      // name: '',
       price: null,
       quantity: 1,
     };
@@ -54,29 +62,24 @@ export class CartService {
   }
 
   updateItemQuantity(id: string, quantity: number | null) {
-    // Allow empty or decimal entry, clamp negative values to 0
     const validQty = quantity === null ? 0 : Math.max(0, quantity);
     this.items.update((current) =>
       current.map((item) => (item.id === id ? { ...item, quantity: validQty } : item)),
     );
   }
 
-  /*
-  updateItemName(id: string, name: string) {
-    this.items.update((current) =>
-      current.map((item) => (item.id === id ? { ...item, name } : item))
-    );
+  updatePaymentAmount(amount: number | null) {
+    this.paymentAmount.set(amount);
   }
-  */
 
   clearAll() {
     this.items.set([
       {
         id: crypto.randomUUID(),
-        // name: '',
         price: null,
         quantity: 1,
       },
     ]);
+    this.paymentAmount.set(null);
   }
 }

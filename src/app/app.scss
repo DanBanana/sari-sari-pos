@@ -6,7 +6,7 @@
   max-width: 480px;
   margin: 0 auto;
   min-height: 100vh;
-  padding-bottom: 90px;
+  padding-bottom: 30px;
   background-color: #f8f9fa;
   font-family:
     system-ui,
@@ -19,7 +19,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
+  padding: 14px 16px;
   background-color: #0d6efd;
   color: white;
 
@@ -36,6 +36,83 @@
     border-radius: 4px;
     font-size: 0.85rem;
     cursor: pointer;
+  }
+}
+
+.summary-banner {
+  background: white;
+  border-bottom: 2px solid #0d6efd;
+  padding: 10px 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+
+  .summary-grid {
+    display: grid;
+    /* Proportional columns: Items (0.8x), Total (1.2x), Payment (1.5x), Change (1.2x) */
+    grid-template-columns: 0.8fr 1.2fr 1.5fr 1.2fr;
+    gap: 6px;
+    align-items: flex-end;
+    width: 100%;
+
+    .grid-col {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+
+      .col-label {
+        font-size: 0.65rem;
+        color: #6c757d;
+        text-transform: uppercase;
+        font-weight: 700;
+        white-space: nowrap;
+        margin-bottom: 4px;
+      }
+
+      .col-box {
+        height: 38px;
+        display: flex;
+        align-items: center;
+
+        &.display-box {
+          background: #f8f9fa;
+          border: 1px solid #e9ecef;
+          border-radius: 6px;
+          padding: 0 6px;
+        }
+
+        .value {
+          font-size: 0.9rem;
+          font-weight: 700;
+          color: #212529;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          &.total-amount {
+            color: #0d6efd;
+          }
+
+          &.change-amount {
+            color: #198754;
+          }
+        }
+
+        input {
+          height: 100%;
+          width: 100%;
+          padding: 0 6px;
+          border: 1px solid #ced4da;
+          border-radius: 6px;
+          font-size: 0.9rem;
+          font-weight: 600;
+          box-sizing: border-box;
+
+          &:focus {
+            outline: none;
+            border-color: #0d6efd;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -185,39 +262,4 @@
   font-weight: 600;
   margin-top: 4px;
   cursor: pointer;
-}
-
-.sticky-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: white;
-  border-top: 2px solid #0d6efd;
-  padding: 12px 16px;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
-
-  .summary-info {
-    max-width: 480px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .grand-total {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-
-      span {
-        font-size: 0.8rem;
-        color: #6c757d;
-      }
-      .amount {
-        font-size: 1.35rem;
-        font-weight: bold;
-        color: #0d6efd;
-      }
-    }
-  }
 }

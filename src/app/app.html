@@ -10,6 +10,51 @@
     </button>
   </header>
 
+  <!-- Balanced Grid Summary Banner -->
+  <section class="summary-banner">
+    <div class="summary-grid">
+      <!-- Items -->
+      <div class="grid-col">
+        <span class="col-label">Items</span>
+        <div class="col-box display-box">
+          <span class="value">{{ cartService.totalItemCount() | number: '1.0-2' }}</span>
+        </div>
+      </div>
+
+      <!-- Total -->
+      <div class="grid-col">
+        <span class="col-label">Total</span>
+        <div class="col-box display-box">
+          <span class="value total-amount">₱{{ cartService.grandTotal() | number: '1.2-2' }}</span>
+        </div>
+      </div>
+
+      <!-- Payment Field -->
+      <div class="grid-col payment-col">
+        <span class="col-label">Payment (₱)</span>
+        <div class="col-box">
+          <input
+            type="number"
+            inputmode="decimal"
+            [ngModel]="cartService.paymentAmount()"
+            (ngModelChange)="cartService.updatePaymentAmount($event)"
+            placeholder="0.00"
+            min="0"
+            step="any"
+          />
+        </div>
+      </div>
+
+      <!-- Change -->
+      <div class="grid-col">
+        <span class="col-label">Change</span>
+        <div class="col-box display-box">
+          <span class="value change-amount">₱{{ cartService.changeDue() | number: '1.2-2' }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <main class="item-list">
     @for (item of cartService.items(); track item.id; let i = $index) {
       <div class="item-card">
@@ -25,18 +70,6 @@
         </div>
 
         <div class="card-body">
-          <!--
-          <div class="form-group">
-            <label>Item Name</label>
-            <input
-              type="text"
-              [ngModel]="item.name"
-              (ngModelChange)="cartService.updateItemName(item.id, $event)"
-              placeholder="e.g. Pancit Canton"
-            />
-          </div>
-          -->
-
           <div class="form-row">
             <div class="form-group field-price">
               <label>Price (₱)</label>
@@ -82,16 +115,4 @@
 
     <button class="btn-add-item" (click)="cartService.addItem()">+ Add Item</button>
   </main>
-
-  <footer class="sticky-footer">
-    <div class="summary-info">
-      <span
-        >Total Items: <strong>{{ cartService.totalItemCount() | number: '1.0-2' }}</strong></span
-      >
-      <div class="grand-total">
-        <span>Overall Total:</span>
-        <span class="amount">₱{{ cartService.grandTotal() | number: '1.2-2' }}</span>
-      </div>
-    </div>
-  </footer>
 </div>
