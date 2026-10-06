@@ -6,7 +6,14 @@ import { CartItem } from '../models/cart-item.model';
 })
 export class CartService {
   // Main reactive state
-  items = signal<CartItem[]>([{ id: crypto.randomUUID(), name: '', price: null, quantity: 1 }]);
+  items = signal<CartItem[]>([
+    {
+      id: crypto.randomUUID(),
+      // name: '',
+      price: null,
+      quantity: 1,
+    },
+  ]);
 
   // Helper for individual subtotal
   getItemSubtotal(item: CartItem): number {
@@ -25,11 +32,11 @@ export class CartService {
     this.items().reduce((sum, item) => sum + this.getItemSubtotal(item), 0),
   );
 
-  // State mutation methods (creates fresh object references to trigger signal updates)
+  // State mutation methods
   addItem() {
     const newItem: CartItem = {
       id: crypto.randomUUID(),
-      name: '',
+      // name: '',
       price: null,
       quantity: 1,
     };
@@ -46,20 +53,30 @@ export class CartService {
     );
   }
 
-  updateItemQuantity(id: string, quantity: number) {
-    const validQty = quantity < 1 ? 1 : quantity;
+  updateItemQuantity(id: string, quantity: number | null) {
+    // Allow empty or decimal entry, clamp negative values to 0
+    const validQty = quantity === null ? 0 : Math.max(0, quantity);
     this.items.update((current) =>
       current.map((item) => (item.id === id ? { ...item, quantity: validQty } : item)),
     );
   }
 
+  /*
   updateItemName(id: string, name: string) {
     this.items.update((current) =>
-      current.map((item) => (item.id === id ? { ...item, name } : item)),
+      current.map((item) => (item.id === id ? { ...item, name } : item))
     );
   }
+  */
 
   clearAll() {
-    this.items.set([{ id: crypto.randomUUID(), name: '', price: null, quantity: 1 }]);
+    this.items.set([
+      {
+        id: crypto.randomUUID(),
+        // name: '',
+        price: null,
+        quantity: 1,
+      },
+    ]);
   }
 }
